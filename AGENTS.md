@@ -16,7 +16,6 @@
 - **版面配置**：左側固定側邊欄（寬度 `270px`）+ 右側內容閱讀區（最大寬度 `900px` 置中）。
 
 ## 3. 目錄結構與檔案命名規範 (Directory & Naming Rules)
-```text
 /
 ├── AGENTS.md                   # AI 開發規範文件
 ├── index.html                  # 首頁（專案總覽與自動渲染的模組卡片列表）
@@ -31,3 +30,14 @@
 └── modules/                    # 所有技術日誌子頁面皆放置於此
     ├── 01-ai-behavior-tree.html
     └── 02-interactive-traps.html
+
+- **HTML 命名規範**：`modules/` 內的檔案必須採用 `兩位數流水號-英文小寫短橫線命名.html`（例如：`01-ai-behavior-tree.html`、`03-eqs-cover-system.html`）。
+- **圖片資產命名規範**：所有引擎藍圖、C++ 程式碼或遊戲實機截圖必須統一存放於 `assets/images/`，採用 `兩位數流水號-英文小寫短橫線描述.png` 命名（嚴禁使用中文或空格）。
+
+## 4. 新增日誌頁面的標準結構 (Standard Page Template)
+每當新增一篇開發日誌（`modules/XX-name.html`）時，`<main class="content">` 內部必須嚴格按照以下區塊順序撰寫，不得省略或調換：
+1. **Header 區塊 (`.module-header`)**：包含模組編號徽章（`<span class="badge">`）、主標題（`<h1>`）、適用引擎/版本資訊與最後更新日期。
+2. **區塊一：機制設計目標 (`<h2>1. 機制設計目標</h2>`)**：使用 `.callout-box` 說明該系統解決的遊戲體驗問題與核心設計指標。
+3. **區塊二：邏輯流程圖與引擎實作 (`<h2>2. 邏輯流程圖與引擎實作</h2>`)**：
+   - 使用 `<div class="mermaid-wrapper"><div class="mermaid">` 撰寫狀態機（FSM）或行為樹（Behavior Tree）的節點流向圖。
+   - 若有對應的引擎藍圖、C++ 程式碼或遊戲實機畫面，必須使用 `<figure class="screenshot-box">` 
