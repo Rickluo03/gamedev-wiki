@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>#02 環境互動陷阱觸發機制 | Game Dev Wiki</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a href="../index.html" class="brand">⚙️ Game Dev Wiki</a>
+    <ul id="sidebar-nav" class="nav-list"></ul>
+  </aside>
+
+  <div class="main-wrapper">
+    <main class="content">
+      <header class="module-header">
+        <span class="badge">Gameplay Mechanics · Module #02</span>
+        <h1>環境互動陷阱觸發機制</h1>
+        <p class="meta-info">適用引擎：Unreal Engine / 通用元件架構 ｜ 最後更新：2026-11-14</p>
+      </header>
+
+      <h2>1. 機制設計目標</h2>
+      <div class="callout-box">
+        <strong>核心目標：</strong>採用「感應器（Trigger Sensor）與執行器（Trap Actuator）解耦」的介面設計，讓同一個壓力板或雷射絆線可以自由綁定多個機關（如落石、毒氣閥門或警報器），並同時對<strong>玩家與敵方 AI 生效</strong>，創造利用環境擊殺敵人的戰術深度。
+      </div>
+
+      <h2>2. 邏輯流程圖</h2>
+      <div class="mermaid-wrapper">
+        <div class="mermaid">
+          stateDiagram-v2
+            [*] --> Armed: 關卡初始化
+            Armed --> Triggered: 偵測到 Pawn 進入碰撞盒
+            Triggered --> Active: 延遲 ActivationDelay 秒後釋放傷害
+            Active --> Cooldown: 機關動作完成
+            Cooldown --> Armed: 冷卻結束 (bIsReusable == true)
+            Cooldown --> Disabled: 一次性陷阱 (bIsReusable == false)
+        </div>
+      </div>
+
+      <h2>3. 關鍵參數設定表</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>參數名稱</th>
+            <th>資料型別</th>
+            <th>預設值</th>
+            <th>設計用途說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>ActivationDelay</code></td>
+            <td>Float</td>
+            <td>0.45 sec</td>
+            <td>踩下機關到實際造成傷害前的音效／閃光預警時間</td>
+          </tr>
+          <tr>
+            <td><code>BaseDamage</code></td>
+            <td>Float</td>
+            <td>75.0</td>
+            <td>陷阱觸發時對範圍內目標造成的基礎物理傷害</td>
+          </tr>
+          <tr>
+            <td><code>CooldownDuration</code></td>
+            <td>Float</td>
+            <td>6.0 sec</td>
+            <td>可重複觸發型陷阱重置回 Armed 狀態所需的冷卻秒數</td>
+          </tr>
+          <tr>
+            <td><code>bAffectAI</code></td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否允許敵方守衛觸發此機關（支援誘敵戰術）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. 測試與平衡性調整紀錄</h2>
+      <ul class="changelog-list">
+        <li><strong>[v1.0] 連續重複觸發 Bug：</strong>角色在陷阱範圍內移動時每幀重複扣血 -> 導入狀態機鎖定機制，進入 <code>Triggered</code> 後立即關閉碰撞檢測，直到重置回 <code>Armed</code>。</li>
+        <li><strong>[v1.1] AI 無視陷阱路徑問題：</strong>守衛會直接踩進已啟動的火焰陷阱 -> 為陷阱加上動態 <code>NavModifierVolume</code>，啟動期間提高該區域尋路代價。</li>
+      </ul>
+    </main>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
