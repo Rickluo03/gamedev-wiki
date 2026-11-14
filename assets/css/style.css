@@ -270,4 +270,26 @@ code {
         margin-left: 0;
         padding: 24px 20px;
     }
+    /* 實機與藍圖截圖展示框 */
+    .screenshot-box {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+        .screenshot-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .screenshot-box figcaption {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
 }

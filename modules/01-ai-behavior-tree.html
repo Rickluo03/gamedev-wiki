@@ -18,7 +18,7 @@
       <header class="module-header">
         <span class="badge">AI Architecture · Module #01</span>
         <h1>敵人巡邏與警戒 AI 行為樹</h1>
-        <p class="meta-info">適用引擎：Unreal Engine / 通用行為樹架構 ｜ 最後更新：2026-11-10</p>
+        <p class="meta-info">適用引擎：Unreal Engine 4 / 通用行為樹架構 ｜ 最後更新：2026-11-14</p>
       </header>
 
       <h2>1. 機制設計目標</h2>
@@ -26,7 +26,7 @@
         <strong>核心目標：</strong>讓潛行關卡中的守衛 AI 具備「可預測但具壓迫感」的反應層次。透過行為樹（Behavior Tree, BT）與黑板變數（Blackboard），將 AI 行為劃分為<strong>常態巡邏、聲響／殘影調查、全面追擊</strong>三階段，避免玩家一被瞥見就瞬間失去潛行樂趣。
       </div>
 
-      <h2>2. 邏輯流程圖</h2>
+      <h2>2. 邏輯流程圖與引擎實作</h2>
       <div class="mermaid-wrapper">
         <div class="mermaid">
           flowchart TD
@@ -39,6 +39,11 @@
             LostSight -->|否| KeepChase[持續更新 TargetLocation]
         </div>
       </div>
+
+      <figure class="screenshot-box">
+        <img src="../assets/images/01-bt-blueprint.png" alt="Unreal Engine 行為樹與程式碼實作截圖" />
+        <figcaption>圖 1：Unreal Engine 專案中的 Behavior Tree 節點與黑板變數配置實機截圖</figcaption>
+      </figure>
 
       <h2>3. 關鍵參數設定表</h2>
       <table>
